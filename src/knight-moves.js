@@ -1,12 +1,12 @@
 //main knightMoves() function
- export function knightMoves(start,target){
+export function knightMoves(start,target){
 
- }
+}
 
- //helper functions
+//helper functions
 
  //function that returns an array of every possible location the knight can get move to from a specified square
- function possibleMoves(index){
+function possibleMoves(index){
     let allMoves=[];
     if(index[1]<=5){
         if(index[0]<7){
@@ -41,10 +41,10 @@
         }
     }
     return allMoves;
- }
+}
 
- //function that makes its way through a queue and analyzes the input
- function movesQueue(start,target){
+//function that makes its way through a queue and analyzes the input
+function movesQueue(start,target){
     let queue=[start];
     let visited=[];
     let reachedTarget=false;
@@ -65,7 +65,33 @@
             }
         }
     }
-    return visited;
+    return {visited,start,target};
  }
 
- console.log(movesQueue([0,0],[3,3]));
+ //function that sorts through an array of the visited indexes and finds the shortest path
+function shortestPath(visitedIndexes,start,target){
+    let path=[target];
+    let currentIndex=target;
+
+    while(!(currentIndex[0]===start[0]&&currentIndex[1]===start[1])){
+        let currentX=currentIndex[0];
+        let currentY=currentIndex[1];
+
+        for(const [parentX,parentY] of visitedIndexes){
+            if(
+                (parentX==currentX&&Math.abs(parentY-currentY)==1)||
+                (parentY==currentY&&Math.abs(parentX-currentX)==1)
+            ){
+                path.unshift([parentX,parentY]);
+                currentIndex=[parentX,parentY];
+                break;
+            }
+        }
+    }
+    return path;
+}
+
+ let test=movesQueue([0,0],[3,3]);
+console.log(test);
+
+console.log(shortestPath(test.visited,test.start,test.target));
